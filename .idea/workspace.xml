@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="e69e4078-9ced-4558-bb45-6e7d0db8a884" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectId" id="1b7NelFG3GhydJAWAlE4o9eHj1E" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources/grama_1/mysql-connector-java-8.0.19.jar!/" />
+    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="project.structure.side.proportion" value="0.2" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Bot" type="Application" factoryName="Application" editBeforeRun="true" activateToolWindowBeforeRun="false" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Bot" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Bot" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e69e4078-9ced-4558-bb45-6e7d0db8a884" name="Default Changelist" comment="" />
+      <created>1587979270027</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1587979270027</updated>
+      <workItem from="1587979273112" duration="820000" />
+      <workItem from="1588082783169" duration="1073000" />
+      <workItem from="1588142866883" duration="1788000" />
+      <workItem from="1588144780660" duration="719000" />
+      <workItem from="1588155256069" duration="599000" />
+      <workItem from="1588345397956" duration="286000" />
+      <workItem from="1588345712037" duration="1542000" />
+      <workItem from="1589192884336" duration="1059000" />
+      <workItem from="1592309650204" duration="933000" />
+      <workItem from="1594138984601" duration="628000" />
+      <workItem from="1594141995656" duration="958000" />
+      <workItem from="1594143259946" duration="31000" />
+      <workItem from="1594143312807" duration="1324000" />
+      <workItem from="1594207621778" duration="817000" />
+      <workItem from="1594218095944" duration="1826000" />
+      <workItem from="1594219940046" duration="648000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>
