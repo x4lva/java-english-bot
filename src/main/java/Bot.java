@@ -467,7 +467,7 @@ public class Bot extends TelegramLongPollingBot {
                         try {
                             execute(sendMessage);
                         } catch (TelegramApiException e) {
-                            e.printStackTrace();
+                            e.printStackTrace();assfsfaf
                         }
                     }else{
                         db.setWrongAnswer(String.valueOf(update.getCallbackQuery().getFrom().getId()));
