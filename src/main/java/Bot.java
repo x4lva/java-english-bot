@@ -39,6 +39,7 @@ public class Bot extends TelegramLongPollingBot {
     boolean istext = false;
     boolean trace = false;
     boolean photo_trace = false;
+    boolean photo_tfrace = false;
 
     String audio_answer;
     String word_answer;
