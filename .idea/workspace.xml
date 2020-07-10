@@ -4,7 +4,6 @@
     <list default="true" id="ecfddd09-a734-4b15-a83d-2b42ef9c2841" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/Bot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Bot.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -85,6 +84,8 @@
       <workItem from="1594387265611" duration="624000" />
       <workItem from="1594389923638" duration="1221000" />
       <workItem from="1594392021780" duration="1343000" />
+      <workItem from="1594394849355" duration="66000" />
+      <workItem from="1594394938095" duration="225000" />
     </task>
     <servers />
   </component>

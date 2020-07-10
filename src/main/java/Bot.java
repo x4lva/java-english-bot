@@ -43,6 +43,7 @@ public class Bot extends TelegramLongPollingBot {
     String audio_answer;
     String word_answer;
     String grama_ans;
+    String menu = "Теорія Тести-Результати Рейтинг-Вивчення слів";
 
     static DataBase db =new  DataBase();
     public static void main(String[] args) {
@@ -50,7 +51,6 @@ public class Bot extends TelegramLongPollingBot {
         TelegramBotsApi botsApi = new TelegramBotsApi();
         db.dbConection();
         try {
-            getWordExample("moonlight");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +80,7 @@ public class Bot extends TelegramLongPollingBot {
                     words = false;
                     audio = false;
                     istext = false;
-                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Налаштування Гра-Рейтинг Результати-Тест")));
+                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
                     sendMessage.setText("Меню");
                     try {
                         execute(sendMessage);
@@ -89,7 +89,7 @@ public class Bot extends TelegramLongPollingBot {
                     }
                     istext=false;
                 }else{
-                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Налаштування Гра-Рейтинг Результати-Тест")));
+                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
                     String ress=null;
                     try {
                         ress = checkText(message.getText());
@@ -149,7 +149,7 @@ public class Bot extends TelegramLongPollingBot {
                         words = false;
                         audio = false;
                         istext = false;
-                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Налаштування Гра-Рейтинг Результати-Тест")));
+                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
                         sendMessage.setText("Меню");
                         try {
                             execute(sendMessage);
@@ -175,7 +175,7 @@ public class Bot extends TelegramLongPollingBot {
                         }
                         sendMessage.setChatId(message.getChatId());
                         sendMessage.setText("Фото надіслано");
-                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Налаштування Гра-Рейтинг Результати-Тест")));
+                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
                         try {
                             execute(sendMessage);
                         } catch (TelegramApiException e) {
@@ -192,7 +192,7 @@ public class Bot extends TelegramLongPollingBot {
                             words = false;
                             audio = false;
                             istext = false;
-                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Налаштування Гра-Рейтинг Результати-Тест")));
+                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
                             sendMessage.setText("Меню");
                             try {
                                 execute(sendMessage);
@@ -214,7 +214,7 @@ public class Bot extends TelegramLongPollingBot {
                             }
                             sendMessage.setChatId(message.getChatId());
                             sendMessage.setText("Повідомлення надіслано");
-                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Налаштування Гра-Рейтинг Результати-Тест")));
+                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
                             try {
                                 execute(sendMessage);
                             } catch (TelegramApiException e) {
@@ -268,7 +268,7 @@ public class Bot extends TelegramLongPollingBot {
                                     audio = false;
                                     istext = false;
                                     db.createNewUser(message.getFrom().getUserName(), message.getFrom().getFirstName(), message.getFrom().getLastName(), String.valueOf(message.getFrom().getId()));
-                                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Налаштування Гра-Рейтинг Результати-Тест")));
+                                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
                                     sendMessage.setText("Старт");
                                     try {
                                         execute(sendMessage);
@@ -293,8 +293,58 @@ public class Bot extends TelegramLongPollingBot {
                                     words = false;
                                     audio = false;
                                     istext = false;
-                                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Налаштування Гра-Рейтинг Результати-Тест")));
+                                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
                                     sendMessage.setText("Меню");
+                                    try {
+                                        execute(sendMessage);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                case "Теорія":
+                                    grama = false;
+                                    words = false;
+                                    audio = false;
+                                    istext = false;
+                                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Часи Дієслово Правопис Речення-Словотворення Конструкції Частини мови Модальні-Меню")));
+                                    sendMessage.setText("Меню");
+                                    try {
+                                        execute(sendMessage);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                case "Дієслово":
+                                    grama = false;
+                                    words = false;
+                                    audio = false;
+                                    istext = false;
+                                    sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Інфінітив Герундій-Меню")));
+                                    sendMessage.setText("Меню");
+                                    try {
+                                        execute(sendMessage);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                case "Інфінітив":
+                                    grama = false;
+                                    words = false;
+                                    audio = false;
+                                    istext = false;
+                                    sendMessage.setText("https://telegra.ph/Infinitive-07-08");
+                                    try {
+                                        execute(sendMessage);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
+                                    break;
+                                case "Герундій":
+                                    grama = false;
+                                    words = false;
+                                    audio = false;
+                                    istext = false;
+                                    sendMessage.setText("https://telegra.ph/Gerund-07-08");
                                     try {
                                         execute(sendMessage);
                                     } catch (TelegramApiException e) {
