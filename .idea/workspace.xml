@@ -2,13 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ecfddd09-a734-4b15-a83d-2b42ef9c2841" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/Example.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/Meaning.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Words.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/word_audio/moonlight2.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/word_audio/moonlight2.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DataBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/Bot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Bot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/word_audio/moonlight2.mp3" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/word_audio/moonlight2.mp3" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/DataBase.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/DataBase.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -93,6 +92,18 @@
       <workItem from="1594394938095" duration="1787000" />
       <workItem from="1594396754143" duration="1618000" />
       <workItem from="1594398562608" duration="1407000" />
+      <workItem from="1594400406769" duration="1782000" />
+      <workItem from="1594403799520" duration="1586000" />
+      <workItem from="1594405422457" duration="1622000" />
+      <workItem from="1594407314805" duration="479000" />
+      <workItem from="1594407823440" duration="947000" />
+      <workItem from="1594408819208" duration="195000" />
+      <workItem from="1594409033001" duration="393000" />
+      <workItem from="1594409444581" duration="504000" />
+      <workItem from="1594409968367" duration="121000" />
+      <workItem from="1594410109586" duration="65000" />
+      <workItem from="1594410197421" duration="1047000" />
+      <workItem from="1594414137093" duration="608000" />
     </task>
     <task id="LOCAL-00001" summary="Added tutorial">
       <created>1594395259252</created>
@@ -101,7 +112,14 @@
       <option name="project" value="LOCAL" />
       <updated>1594395259252</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added word learning">
+      <created>1594400472044</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1594400472044</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -122,6 +140,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Added tutorial" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added tutorial" />
+    <MESSAGE value="Added word learning" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added word learning" />
   </component>
 </project>

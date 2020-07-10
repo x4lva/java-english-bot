@@ -1,6 +1,5 @@
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Random;
+import java.util.*;
 
 public class DataBase {
     static String url = "jdbc:mysql://localhost/yep?serverTimezone=Europe/Moscow&useSSL=false";
@@ -336,6 +335,40 @@ public class DataBase {
         }
 
         return res;
+
+    }
+
+    public ArrayList<Words> getTestWord(String category){
+        ArrayList<Words> res = new ArrayList<>();
+        ArrayList<Words> ret = new ArrayList<>();
+        Set<Integer> temp = null;
+        try (Connection con = DriverManager.getConnection(url, usernamec, password)){
+
+            PreparedStatement pr = con.prepareStatement("select name, translate"
+                    + " from tets_words where category=?");
+            pr.setString(1, category);
+
+            ResultSet rs = pr.executeQuery();
+            while (rs.next()){
+                res.add(new Words(rs.getString(1),rs.getString(2)));
+            }
+
+            temp = new HashSet<Integer>();
+            while (temp.size()!=5){
+
+                temp.add(getRandomNumberInRange(1, getResultSetRowCount(rs)));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        Iterator<Integer> i = temp.iterator();
+        while (i.hasNext()) {
+            ret.add(res.get(i.next()));
+        }
+
+        return ret;
 
     }
 
