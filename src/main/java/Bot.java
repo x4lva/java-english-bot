@@ -332,6 +332,8 @@ public class Bot extends TelegramLongPollingBot {
                                     words = false;
                                     audio = false;
                                     istext = false;
+                                    istext = false;
+
                                     sendMessage.setText("https://telegra.ph/Infinitive-07-08");
                                     try {
                                         execute(sendMessage);
