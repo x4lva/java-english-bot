@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ecfddd09-a734-4b15-a83d-2b42ef9c2841" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Bot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/Bot.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/Bot.class" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -59,7 +61,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="e69e4078-9ced-4558-bb45-6e7d0db8a884" name="Default Changelist" comment="" />
+      <changelist id="ecfddd09-a734-4b15-a83d-2b42ef9c2841" name="Default Changelist" comment="" />
       <created>1587979270027</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -80,6 +82,9 @@
       <workItem from="1594207621778" duration="817000" />
       <workItem from="1594218095944" duration="1826000" />
       <workItem from="1594219940046" duration="648000" />
+      <workItem from="1594387265611" duration="624000" />
+      <workItem from="1594389923638" duration="1221000" />
+      <workItem from="1594392021780" duration="1343000" />
     </task>
     <servers />
   </component>
@@ -91,7 +96,9 @@
       <map>
         <entry key="MAIN">
           <value>
-            <State />
+            <State>
+              <option name="COLUMN_ORDER" />
+            </State>
           </value>
         </entry>
       </map>

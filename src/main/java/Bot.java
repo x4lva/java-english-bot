@@ -49,7 +49,11 @@ public class Bot extends TelegramLongPollingBot {
         ApiContextInitializer.init();
         TelegramBotsApi botsApi = new TelegramBotsApi();
         db.dbConection();
-
+        try {
+            getWordExample("moonlight");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         try {
             botsApi.registerBot(new Bot());
 
@@ -467,7 +471,7 @@ public class Bot extends TelegramLongPollingBot {
                         try {
                             execute(sendMessage);
                         } catch (TelegramApiException e) {
-                            e.printStackTrace();assfsfaf
+                            e.printStackTrace();
                         }
                     }else{
                         db.setWrongAnswer(String.valueOf(update.getCallbackQuery().getFrom().getId()));
@@ -559,6 +563,7 @@ public class Bot extends TelegramLongPollingBot {
         System.out.print(res);
         return res;
     }
+
 
     public java.lang.String getBotUsername() {
         return "yep_eng_bot";
