@@ -20,10 +20,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
@@ -51,6 +49,9 @@ public class Bot extends TelegramLongPollingBot {
         TelegramBotsApi botsApi = new TelegramBotsApi();
         db.dbConection();
         try {
+            String word = "to try";
+            String[] res = getExample(word);
+            downloadWordAudio("https:"+res[1], "C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+word+".mp3");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -332,8 +333,6 @@ public class Bot extends TelegramLongPollingBot {
                                     words = false;
                                     audio = false;
                                     istext = false;
-                                    istext = false;
-
                                     sendMessage.setText("https://telegra.ph/Infinitive-07-08");
                                     try {
                                         execute(sendMessage);
@@ -614,6 +613,69 @@ public class Bot extends TelegramLongPollingBot {
         httpclient.close();
         System.out.print(res);
         return res;
+    }
+
+    public static int getWordExample(String a) throws IOException {
+        final CloseableHttpClient httpclient = HttpClients.createDefault();
+        String res = null;
+        final HttpUriRequest httpGet = new HttpGet("https://dictionary.skyeng.ru/api/public/v1/words/search?_format=json&search="+a.replace(" ","+"));
+        try (
+                CloseableHttpResponse response1 = httpclient.execute(httpGet)
+        ){
+            final HttpEntity entity1 = response1.getEntity();
+            res = EntityUtils.toString(entity1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        httpclient.close();
+
+        Gson g = new Gson();
+
+        Meaning[] mean = g.fromJson(res, Meaning[].class);
+
+        int id = mean[0].meanings[0].id;
+
+        return id;
+    }
+
+    public static String[] getExample(String a) throws IOException {
+        int id = getWordExample(a);
+        final CloseableHttpClient httpclient = HttpClients.createDefault();
+        String res = null;
+        final HttpUriRequest httpGet = new HttpGet("http://dictionary.skyeng.ru/api/public/v1/meanings?_format=json&ids="+id);
+        try (
+                CloseableHttpResponse response1 = httpclient.execute(httpGet)
+        ){
+            final HttpEntity entity1 = response1.getEntity();
+            res = EntityUtils.toString(entity1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        httpclient.close();
+
+        Gson g = new Gson();
+
+        Example[] mean = g.fromJson(res, Example[].class);
+
+        String example = mean[0].examples[0].text;
+        String audiourl = mean[0].soundUrl;
+
+        return new String[]{example.replace("[","").replace("]",""),audiourl};
+    }
+
+    public static void downloadWordAudio(String urlStr, String file) throws IOException {
+        URL url = new URL(urlStr);
+        BufferedInputStream bis = new BufferedInputStream(url.openStream());
+        FileOutputStream fis = new FileOutputStream(file);
+        byte[] buffer = new byte[1024];
+        int count = 0;
+        while ((count = bis.read(buffer, 0, 1024)) != -1) {
+            fis.write(buffer, 0, count);
+        }
+        fis.close();
+        bis.close();
     }
 
 
