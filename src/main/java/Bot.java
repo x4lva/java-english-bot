@@ -21,10 +21,10 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.*;
+import java.net.Inet4Address;
+import java.net.StandardSocketOptions;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
 
 public class Bot extends TelegramLongPollingBot {
     ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
@@ -38,11 +38,21 @@ public class Bot extends TelegramLongPollingBot {
     boolean trace = false;
     boolean photo_trace = false;
     boolean is_qwiz = false;
+    boolean is_wrong = false;
+    int wrongs = 0;
     ArrayList<Words> qwiz = null;
+    ArrayList<Words> asks = null;
+    ArrayList<Words> wrong_wars = new ArrayList<Words>();
+
+    ArrayList<Words> wrong = new ArrayList<Words>();
+
+    Set<Integer> vars =null;
+    ArrayList<Integer> var = null;
     String audio_answer;
     String word_answer;
     String grama_ans;
     int curent = -1;
+    int qwiz_curent = -1;
 
 
     String menu = "Теорія Тести-Результати Рейтинг-Вивчення слів";
@@ -224,312 +234,558 @@ public class Bot extends TelegramLongPollingBot {
                         }
                     }else {
                         if (is_qwiz){
+                            if (update.getMessage().getText().equals("Меню")){
+                                grama = false;
+                                words = false;
+                                audio = false;
+                                istext = false;
+                                is_qwiz = false;
+                                curent=-1;
+                                qwiz_curent=-1;
+                                SendMessage sendMessage = new SendMessage().setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
 
-                        }else{
-                            if (message.getFrom().getId() == 502952440) {
-                                SendMessage sendMessage = new SendMessage().setChatId(message.getChatId());
-                                sendMessage.enableHtml(true);
-                                switch (message.getText()) {
-                                    case "Адмін":
-                                        sendMessage.setText("Панель адміністратора");
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Розсилка Фото-Меню")));
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
+                                sendMessage.setText("Меню").setChatId(message.getChatId());
+                                try {
+                                    execute(sendMessage);
+                                } catch (TelegramApiException e) {
+                                    e.printStackTrace();
+                                }
+                            }else {
+                                if (qwiz_curent==5){
+                                    System.out.println("ТИ СУКА");
+                                }
+                                if (qwiz_curent==4){
+                                    wrong.remove(0);
+                                    SendMessage ur = new SendMessage().setChatId(message.getChatId());
+                                    if (update.getMessage().getText().replace(" ","").replace(" ","").equals(qwiz.get(4).translate.replace(" ","").replace(" ",""))){
+                                        ur.setText("Відповідь вірна");
+                                    }else {
+                                        wrong.add(qwiz.get(4));
+                                        ur.setText("Відповідь невірна");
+                                    }
+                                    try {
+                                        execute(ur);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if (wrong.size() !=0 ){
+                                        is_wrong = true;
+                                        wrongs = wrong.size();
+                                        qwiz_curent = -1;
+                                    }
+                                    is_qwiz = false;
+                                }else{
+                                    qwiz_curent++;
+                                    vars = new HashSet<Integer>();
+                                    var = new ArrayList<Integer>();
+                                    SendMessage sm = null;
+                                    if (qwiz_curent == 0) {
+                                        sm = new SendMessage().setChatId(message.getChatId()).setText("Виберіть вірну відповідь:");
+                                    }
+                                    vars.add(qwiz_curent);
+                                    while (vars.size() != 4) {
+                                        int temp = getRandomNumberInRange(0, 4);
+                                        vars.add(temp);
+                                    }
+                                    Iterator<Integer> i = vars.iterator();
+                                    while (i.hasNext()) {
+                                        var.add(i.next());
+                                    }
+                                    Collections.shuffle(var);
+
+                                    if (qwiz_curent == 0) {
+                                        if (update.getMessage().getText().replace(" ", "").replace(" ", "").equals(qwiz.get(0).translate.replace(" ", "").replace(" ", ""))) {
+                                            SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("Відповідь вірна");
+                                            try {
+                                                execute(sd);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("Відповідь невірна");
+                                            wrong.add(qwiz.get(0));
+                                            try {
+                                                execute(sd);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
-                                        break;
-                                    case "Розсилка":
-                                        sendMessage.setText("Напишіть повідомлення для розсилки");
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Скасувати")));
-                                        trace = true;
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
+                                    } else {
+                                        if (update.getMessage().getText().replace(" ", "").replace(" ", "").equals(qwiz.get(qwiz_curent - 1).translate.replace(" ", "").replace(" ", ""))) {
+                                            SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("Відповідь вірна");
+                                            try {
+                                                execute(sd);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                        } else {
+                                            SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("Відповідь невірна");
+                                            wrong.add(qwiz.get(qwiz_curent-1));
+                                            try {
+                                                execute(sd);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
-                                        break;
-                                    case "Фото":
-                                        sendMessage.setText("Надішліть назву фото для розсилки");
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Скасувати")));
-                                        photo_trace = true;
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
+                                    }
+                                    SendMessage word = new SendMessage().setChatId(message.getChatId()).setText(qwiz.get(qwiz_curent).word).setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(qwiz.get(var.get(0)).translate.replace(" ", " ") + " " + qwiz.get(var.get(1)).translate.replace(" ", " ") + "-" + qwiz.get(var.get(2)).translate.replace(" ", " ") + " " + qwiz.get(var.get(3)).translate.replace(" ", " ") + "-Меню")));
+                                    try {
+                                        if (qwiz_curent == 0) {
+                                            execute(sm);
                                         }
-                                        break;
+                                        execute(word);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
-                            if (update.getMessage().hasText()) {
-                                SendMessage sendMessage = new SendMessage().setChatId(message.getChatId());
-                                sendMessage.enableHtml(true);
-                                switch (update.getMessage().getText()) {
-                                    case "/start":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        db.createNewUser(message.getFrom().getUserName(), message.getFrom().getFirstName(), message.getFrom().getLastName(), String.valueOf(message.getFrom().getId()));
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
-                                        sendMessage.setText("Старт");
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Текст":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = true;
-                                        SendMessage text = new SendMessage().setChatId(message.getChatId()).setText(db.getText()).enableHtml(true).setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Скасувати")));
-                                        try {
-                                            execute(text);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Меню":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
-                                        sendMessage.setText("Меню");
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Вивчення слів":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Мистецтво Тема1 Тема2 Тема3-Тема4 Тема5 Тема6 Тема7-Меню")));
-                                        sendMessage.setText("Виберіть тему");
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Мистецтво":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        is_qwiz = true;
-                                        curent = 0;
-                                        qwiz = db.getTestWord("art");
-                                        SendAudio sa = new SendAudio();
+                        }else{
+                            if (is_wrong){
+                                if (update.getMessage().getText().equals("Меню")){
+                                    grama = false;
+                                    words = false;
+                                    audio = false;
+                                    istext = false;
+                                    is_qwiz = false;
+                                    curent=-1;
+                                    qwiz_curent=-1;
+                                    SendMessage sendMessage = new SendMessage().setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
 
-                                        sa.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Далі-Меню")));
-                                        sa.setCaption(qwiz.get(curent).word+" - "+qwiz.get(curent).translate).setChatId(message.getChatId());
-                                        String[] res = new String[0];
-                                        try {
-                                            res = getExample(qwiz.get(curent).word);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
+                                    sendMessage.setText("Меню").setChatId(message.getChatId());
+                                    try {
+                                        execute(sendMessage);
+                                    } catch (TelegramApiException e) {
+                                        e.printStackTrace();
+                                    }
+                                }else {
+                                    if (qwiz_curent==wrongs-1){
+//                                        wrong.remove(0);
+                                        System.out.println("-------------------");
+                                        for (int i = 0; i < wrong.size(); i++) {
+                                            System.out.println(wrong.get(i).word);
                                         }
-                                        sendMessage.setText("<b>Приклад:</b> "+res[0]).setChatId(message.getChatId()).enableHtml(true);
-                                        try {
-                                            downloadWordAudio("https:"+res[1], "C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+qwiz.get(curent).word+".mp3");
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        try {
-                                            sa.setAudio(qwiz.get(curent).word, new FileInputStream(new File("C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+qwiz.get(curent).word+".mp3")));
-                                        } catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
-                                        try {
-                                            execute(sa);
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Далі":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        is_qwiz = true;
-                                        curent++;
-                                        SendAudio sa2 = new SendAudio();
+                                        SendMessage ur = new SendMessage().setChatId(message.getChatId());
+                                        if (update.getMessage().getText().replace(" ","").replace(" ","").equals(wrong.get(wrongs-1).translate.replace(" ","").replace(" ",""))){
+                                            ur.setText("Відповідь вірна");
 
-                                        sa2.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Далі-Меню")));
-                                        sa2.setCaption(qwiz.get(curent).word+" - "+qwiz.get(curent).translate).setChatId(message.getChatId());
-                                        String[] res2 = new String[0];
-                                        try {
-                                            res2 = getExample(qwiz.get(curent).word);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                        sendMessage.setText("<b>Приклад:</b> "+res2[0]).setChatId(message.getChatId()).enableHtml(true);
-                                        try {
-                                            downloadWordAudio("https:"+res2[1], "C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+qwiz.get(curent).word+".mp3");
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
+                                        }else {
+                                            wrong.add(wrong.get(wrongs-1));
+                                            ur.setText("Відповідь невірна");
                                         }
                                         try {
-                                            sa2.setAudio(qwiz.get(curent).word, new FileInputStream(new File("C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+qwiz.get(curent).word+".mp3")));
-                                        } catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
-                                        try {
-                                            execute(sa2);
-                                            execute(sendMessage);
+                                            execute(ur);
                                         } catch (TelegramApiException e) {
                                             e.printStackTrace();
                                         }
-                                        break;
-                                    case "Теорія":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Часи Дієслово Правопис Речення-Словотворення Конструкції Частини мови Модальні-Меню")));
-                                        sendMessage.setText("Меню");
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Дієслово":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Інфінітив Герундій-Меню")));
-                                        sendMessage.setText("Меню");
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Інфінітив":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        sendMessage.setText("https://telegra.ph/Infinitive-07-08");
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Герундій":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        sendMessage.setText("https://telegra.ph/Gerund-07-08");
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Тести":
-                                        grama = false;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Граматика Слова Слухання Текст-Меню")));
-                                        sendMessage.setText("Виберіть тему\uD83D\uDCDA");
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Граматика":
-                                        grama = true;
-                                        words = false;
-                                        audio = false;
-                                        istext = false;
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Меню")));
-                                        sendMessage.setText("Виберіть правильну відповідь");
-                                        String[] test = db.getTestF();
 
-                                        File img = new File("C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\grama_1\\" + test[0]);
-                                        grama_ans = test[1];
-                                        SendPhoto photo = null;
-                                        if (test[2].equals("1")){
-                                            photo = new SendPhoto().setChatId(message.getChatId()).setReplyMarkup(inlineKeyboardMarkup.setKeyboard(inlineButtons.sendThirdOpcions()));
+                                        if (wrong.size() !=wrongs ){
+                                            is_wrong = true;
+                                            for (int i = 0; i < wrongs; i++) {
+                                                wrong.remove(0);
+                                            }
+                                            wrongs = wrong.size();
+                                            qwiz_curent = -1;
                                         }else{
-                                            photo = new SendPhoto().setChatId(message.getChatId()).setReplyMarkup(inlineKeyboardMarkup.setKeyboard(inlineButtons.sendEightOpcions()));
-                                        }
-                                        try {
-                                            photo.setPhoto("SomeText", new FileInputStream(img));
-                                            execute(sendMessage);
-                                            execute(photo);
-                                        } catch (TelegramApiException | FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Слова":
-                                        words = true;
-                                        grama = false;
-                                        audio = false;
-                                        istext = false;
-                                        String[] wordst = db.getTestWords();
-                                        String qwestion = wordst[1];
-                                        word_answer = wordst[2];
-                                        sendMessage.setReplyMarkup(inlineKeyboardMarkup.setKeyboard(inlineButtons.sendWordOpcions(wordst[0])));
-                                        sendMessage.setText("Вкажіть переклад слова <b>" + qwestion + "</b>").setChatId(update.getMessage().getChatId());
-                                        try {
-                                            execute(sendMessage);
-                                        } catch (TelegramApiException e) {
-                                            e.printStackTrace();
-                                        }
-                                        break;
-                                    case "Слухання":
-                                        words = false;
-                                        grama = false;
-                                        audio = true;
-                                        istext = false;
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Меню")));
-                                        sendMessage.setText("Вкажи чи правильне твердження:");
-                                        String[] audiot = db.getTestAudio();
-                                        File myFolders = new File("C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\audio\\" + audiot[3]);
-                                        audio_answer = audiot[2];
-                                        String qwestion_a = audiot[1];
+                                            SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("ИЗИ НАХУЙ");
 
-                                        SendAudio sendAudio = null;
-                                        try {
-                                            sendAudio = new SendAudio().setAudio("Сулахання №" + audiot[0], new FileInputStream(myFolders)).setChatId(message.getChatId()).setCaption(qwestion_a).setReplyMarkup(inlineKeyboardMarkup.setKeyboard(inlineButtons.sendTrueFalseOpcions()));
-                                            execute(sendMessage);
-                                            execute(sendAudio);
-                                        } catch (TelegramApiException | FileNotFoundException e) {
-                                            e.printStackTrace();
+                                            try {
+                                                execute(sd);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
                                         }
-                                        break;
-                                    case "Результати":
-                                        words = false;
-                                        grama = false;
-                                        audio = false;
-                                        istext = false;
-                                        int[] score = db.getUserScore(String.valueOf(message.getFrom().getId()));
-                                        double perc = ((double) score[1] / (double) score[0]) * 100.0;
-                                        sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Меню")));
-                                        sendMessage.setText("Ваші результати:\n - Пройдено завдань: <b>" + score[0] + "</b>\n - Кільість балів: <b>" + score[1] + "</b>\n - Середній результат: <b>" + Math.round(perc) + "%</b>");
+                                        wrongs = wrong.size();
+
+                                    }else{
+
+                                        qwiz_curent++;
+                                        vars = new HashSet<Integer>();
+                                        var = new ArrayList<Integer>();
+                                        SendMessage sm = null;
+                                        if (qwiz_curent == 0) {
+                                          //  wrong.remove(wrong.size()-1);
+                                            sm = new SendMessage().setChatId(message.getChatId()).setText("Виберіть вірну відповідь:");
+                                        }
+                                        vars.add(qwiz_curent);
+                                        while (vars.size() != 4) {
+                                            int temp = getRandomNumberInRange(0, 4);
+                                            vars.add(temp);
+                                        }
+                                        Iterator<Integer> i = vars.iterator();
+                                        while (i.hasNext()) {
+                                            var.add(i.next());
+                                        }
+                                        Collections.shuffle(var);
+
+                                        if (qwiz_curent == 0) {
+                                            if (update.getMessage().getText().replace(" ", "").replace(" ", "").equals(wrong.get(0).translate.replace(" ", "").replace(" ", ""))) {
+                                                SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("Відповідь вірна");
+                                                try {
+                                                    execute(sd);
+                                                } catch (TelegramApiException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            } else {
+                                                SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("Відповідь невірна");
+                                                wrong.add(wrong.get(0));
+                                                try {
+                                                    execute(sd);
+                                                } catch (TelegramApiException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        } else {
+                                            if (update.getMessage().getText().replace(" ", "").replace(" ", "").equals(wrong.get(qwiz_curent - 1).translate.replace(" ", "").replace(" ", ""))) {
+                                                SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("Відповідь вірна");
+                                                try {
+                                                    execute(sd);
+                                                } catch (TelegramApiException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            } else {
+                                                SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("Відповідь невірна");
+                                                wrong.add(wrong.get(qwiz_curent-1));
+                                                try {
+                                                    execute(sd);
+                                                } catch (TelegramApiException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        }
+                                        SendMessage word = new SendMessage().setChatId(message.getChatId()).setText(wrong.get(qwiz_curent).word).setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(qwiz.get(var.get(0)).translate.replace(" ", " ") + " " + qwiz.get(var.get(1)).translate.replace(" ", " ") + "-" + qwiz.get(var.get(2)).translate.replace(" ", " ") + " " + qwiz.get(var.get(3)).translate.replace(" ", " ") + "-Меню")));
                                         try {
-                                            execute(sendMessage);
+                                            if (qwiz_curent == 0) {
+                                                execute(sm);
+                                            }
+                                            execute(word);
                                         } catch (TelegramApiException e) {
                                             e.printStackTrace();
                                         }
-                                        break;
-                                    default:
-                                        throw new IllegalStateException("Unexpected value: " + update.getMessage().getText());
+                                        System.out.println("-------------------");
+                                        for (int j = 0; j < wrong.size(); j++) {
+                                            System.out.println(wrong.get(j).word);
+                                        }
+                                        if (qwiz_curent == 0){
+                                            wrong.remove(wrong.size()-1);
+                                        }
+                                    }
+                                }
+                            }else{
+                                if (message.getFrom().getId() == 502952440) {
+                                    SendMessage sendMessage = new SendMessage().setChatId(message.getChatId());
+                                    sendMessage.enableHtml(true);
+                                    switch (message.getText()) {
+                                        case "Адмін":
+                                            sendMessage.setText("Панель адміністратора");
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Розсилка Фото-Меню")));
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Розсилка":
+                                            sendMessage.setText("Напишіть повідомлення для розсилки");
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Скасувати")));
+                                            trace = true;
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Фото":
+                                            sendMessage.setText("Надішліть назву фото для розсилки");
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Скасувати")));
+                                            photo_trace = true;
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                    }
+                                }
+                                if (update.getMessage().hasText()) {
+                                    SendMessage sendMessage = new SendMessage().setChatId(message.getChatId());
+                                    sendMessage.enableHtml(true);
+                                    switch (update.getMessage().getText()) {
+                                        case "/start":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            db.createNewUser(message.getFrom().getUserName(), message.getFrom().getFirstName(), message.getFrom().getLastName(), String.valueOf(message.getFrom().getId()));
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
+                                            sendMessage.setText("Старт");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Текст":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = true;
+                                            SendMessage text = new SendMessage().setChatId(message.getChatId()).setText(db.getText()).enableHtml(true).setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Скасувати")));
+                                            try {
+                                                execute(text);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Меню":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            is_qwiz = false;
+                                            curent=-1;
+                                            qwiz_curent=-1;
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons(menu)));
+                                            sendMessage.setText("Меню");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Вивчення слів":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            is_qwiz = false;
+                                            curent=-1;
+                                            qwiz_curent=-1;
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Мистецтво Тема1 Тема2 Тема3-Тема4 Тема5 Тема6 Тема7-Меню")));
+                                            sendMessage.setText("Виберіть тему");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Мистецтво":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            is_qwiz = false;
+                                            curent++;
+                                            qwiz = db.getTestWord("art");
+                                            SendAudio sa = new SendAudio();
+
+                                            sa.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Далі-Меню")));
+                                            sa.setCaption(qwiz.get(curent).word+" - "+qwiz.get(curent).translate).setChatId(message.getChatId());
+                                            String[] res = new String[0];
+                                            try {
+                                                res = getExample(qwiz.get(curent).word);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            sendMessage.setText("<b>Приклад:</b> "+res[0]).setChatId(message.getChatId()).enableHtml(true);
+                                            try {
+                                                downloadWordAudio("https:"+res[1], "C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+qwiz.get(curent).word+".mp3");
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            try {
+                                                sa.setAudio(qwiz.get(curent).word, new FileInputStream(new File("C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+qwiz.get(curent).word+".mp3")));
+                                            } catch (FileNotFoundException e) {
+                                                e.printStackTrace();
+                                            }
+                                            try {
+                                                execute(sa);
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Далі":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            is_qwiz = false;
+                                            curent++;
+                                            SendAudio sa2 = new SendAudio();
+
+                                            sa2.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Далі-Меню")));
+                                            sa2.setCaption(qwiz.get(curent).word+" - "+qwiz.get(curent).translate).setChatId(message.getChatId());
+                                            String[] res2 = new String[0];
+                                            System.out.println(curent);
+                                            try {
+                                                res2 = getExample(qwiz.get(curent).word);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            sendMessage.setText("<b>Приклад:</b> "+res2[0]).setChatId(message.getChatId()).enableHtml(true);
+                                            try {
+                                                downloadWordAudio("https:"+res2[1], "C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+qwiz.get(curent).word+".mp3");
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                            try {
+                                                sa2.setAudio(qwiz.get(curent).word, new FileInputStream(new File("C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\word_audio\\"+qwiz.get(curent).word+".mp3")));
+                                            } catch (FileNotFoundException e) {
+                                                e.printStackTrace();
+                                            }
+                                            try {
+                                                execute(sa2);
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            if (curent==4){
+                                                is_qwiz =true;
+                                            }
+                                            break;
+                                        case "Теорія":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Часи Дієслово Правопис Речення-Словотворення Конструкції Частини мови Модальні-Меню")));
+                                            sendMessage.setText("Меню");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Дієслово":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Інфінітив Герундій-Меню")));
+                                            sendMessage.setText("Меню");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Інфінітив":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            sendMessage.setText("https://telegra.ph/Infinitive-07-08");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Герундій":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            sendMessage.setText("https://telegra.ph/Gerund-07-08");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Тести":
+                                            grama = false;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Граматика Слова Слухання Текст-Меню")));
+                                            sendMessage.setText("Виберіть тему\uD83D\uDCDA");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Граматика":
+                                            grama = true;
+                                            words = false;
+                                            audio = false;
+                                            istext = false;
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Меню")));
+                                            sendMessage.setText("Виберіть правильну відповідь");
+                                            String[] test = db.getTestF();
+
+                                            File img = new File("C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\grama_1\\" + test[0]);
+                                            grama_ans = test[1];
+                                            SendPhoto photo = null;
+                                            if (test[2].equals("1")){
+                                                photo = new SendPhoto().setChatId(message.getChatId()).setReplyMarkup(inlineKeyboardMarkup.setKeyboard(inlineButtons.sendThirdOpcions()));
+                                            }else{
+                                                photo = new SendPhoto().setChatId(message.getChatId()).setReplyMarkup(inlineKeyboardMarkup.setKeyboard(inlineButtons.sendEightOpcions()));
+                                            }
+                                            try {
+                                                photo.setPhoto("SomeText", new FileInputStream(img));
+                                                execute(sendMessage);
+                                                execute(photo);
+                                            } catch (TelegramApiException | FileNotFoundException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Слова":
+                                            words = true;
+                                            grama = false;
+                                            audio = false;
+                                            istext = false;
+                                            String[] wordst = db.getTestWords();
+                                            String qwestion = wordst[1];
+                                            word_answer = wordst[2];
+                                            sendMessage.setReplyMarkup(inlineKeyboardMarkup.setKeyboard(inlineButtons.sendWordOpcions(wordst[0])));
+                                            sendMessage.setText("Вкажіть переклад слова <b>" + qwestion + "</b>").setChatId(update.getMessage().getChatId());
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Слухання":
+                                            words = false;
+                                            grama = false;
+                                            audio = true;
+                                            istext = false;
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Меню")));
+                                            sendMessage.setText("Вкажи чи правильне твердження:");
+                                            String[] audiot = db.getTestAudio();
+                                            File myFolders = new File("C:\\Users\\chevp\\Desktop\\YepZnoBot\\src\\main\\resources\\audio\\" + audiot[3]);
+                                            audio_answer = audiot[2];
+                                            String qwestion_a = audiot[1];
+
+                                            SendAudio sendAudio = null;
+                                            try {
+                                                sendAudio = new SendAudio().setAudio("Сулахання №" + audiot[0], new FileInputStream(myFolders)).setChatId(message.getChatId()).setCaption(qwestion_a).setReplyMarkup(inlineKeyboardMarkup.setKeyboard(inlineButtons.sendTrueFalseOpcions()));
+                                                execute(sendMessage);
+                                                execute(sendAudio);
+                                            } catch (TelegramApiException | FileNotFoundException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        case "Результати":
+                                            words = false;
+                                            grama = false;
+                                            audio = false;
+                                            istext = false;
+                                            int[] score = db.getUserScore(String.valueOf(message.getFrom().getId()));
+                                            double perc = ((double) score[1] / (double) score[0]) * 100.0;
+                                            sendMessage.setReplyMarkup(replyKeyboardMarkup.setKeyboard(new ReplyButtons().setReplyButtons("Меню")));
+                                            sendMessage.setText("Ваші результати:\n - Пройдено завдань: <b>" + score[0] + "</b>\n - Кільість балів: <b>" + score[1] + "</b>\n - Середній результат: <b>" + Math.round(perc) + "%</b>");
+                                            try {
+                                                execute(sendMessage);
+                                            } catch (TelegramApiException e) {
+                                                e.printStackTrace();
+                                            }
+                                            break;
+                                        default:
+                                            throw new IllegalStateException("Unexpected value: " + update.getMessage().getText());
+                                    }
                                 }
                             }
                         }
@@ -723,6 +979,16 @@ public class Bot extends TelegramLongPollingBot {
         int id = mean[0].meanings[0].id;
 
         return id;
+    }
+
+    private static int getRandomNumberInRange(int min, int max) {
+
+        if (min >= max) {
+            throw new IllegalArgumentException("max must be greater than min");
+        }
+
+        Random r = new Random();
+        return r.nextInt((max - min) + 1) + min;
     }
 
     public static String[] getExample(String a) throws IOException {
