@@ -252,7 +252,6 @@ public class Bot extends TelegramLongPollingBot {
                                 }
                             }else {
                                 if (qwiz_curent==5){
-                                    System.out.println("ТИ СУКА");
                                 }
                                 if (qwiz_curent==4){
                                     wrong.remove(0);
@@ -386,7 +385,7 @@ public class Bot extends TelegramLongPollingBot {
                                             wrongs = wrong.size();
                                             qwiz_curent = -1;
                                         }else{
-                                            SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("ИЗИ НАХУЙ");
+                                            SendMessage sd = new SendMessage().setChatId(message.getChatId()).setText("");
 
                                             try {
                                                 execute(sd);
